@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
-		<title>user1::list</title>
+		<title>user2::list</title>
 	</head>
 	<body>
-		<h3>user1 목록</h3>
+		<h3>user2 목록</h3>
 		<a th:href="@{/}">Ch07 메인</a>
-		<a th:href="@{/user1/register}">user1 등록</a>
+		<a th:href="@{/user2/register}">user2 등록</a>
 		
 		<table border="1">
 			<tr>
@@ -17,14 +17,14 @@
 				<th>나이</th>
 				<th>관리</th>
 			</tr>
-			<tr th:each="user1:${users}">
-				<td th:text=${user1.uid}>아이디</td>
-				<td th:text=${user1.name}>이름</td>
-				<td th:text=${user1.hp}>휴대폰</td>
-				<td th:text=${user1.age}>나이</td>
+			<tr th:each="user2:${users}">
+				<td th:text=${user2.uid}>아이디</td>
+				<td th:text=${user2.name}>이름</td>
+				<td th:text=${user2.hp}>휴대폰</td>
+				<td th:text=${user2.age}>나이</td>
 				<td>
-					<a th:href="@{/user1/modify(uid=${user1.uid})}">수정</a>
-					<a th:href="@{/user1/delete(uid=${user1.uid})}">삭제</a>
+					<a th:href="@{/user2/modify(uid=${user2.uid})}">수정</a>
+					<a th:href="@{/user2/delete(uid=${user2.uid})}">삭제</a>
 				</td>
 			</tr>
 		</table>
