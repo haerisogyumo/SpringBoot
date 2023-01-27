@@ -1,10 +1,14 @@
 package kr.co.sboard.controller;
 
+import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.co.sboard.service.ArticleService;
 import kr.co.sboard.vo.ArticleVO;
+import kr.co.sboard.vo.FileVO;
+
 
 @Controller
 public class ArticleController {
@@ -21,39 +27,34 @@ public class ArticleController {
 	
 	@GetMapping("list")
 	public String list(Model model, String pg) {
-		int currentPage = service.getCurrentPage(pg);
+		int currentPage = service.getCurrnetPage(pg);
 		int start = service.getLimitStart(currentPage);
-		
 		int total = service.selectCountTotal();
-		int lastPageNum = service.getLastPageNum(total);
 		int pageStartNum = service.getPageStartNum(total, start);
-		int groups[] = service.getPageGroup(currentPage, lastPageNum);
+		int lastPageNum = service.getLastPageNum(total);
+		
+		// 페이지 그룹 start, end 번호
+		int pageGroupStart = service.getPageGroup(currentPage, lastPageNum)[0];
+		int pageGroupEnd = service.getPageGroup(currentPage, lastPageNum)[1];
 		
 		List<ArticleVO> articles = service.selectArticles(start);
-		model.addAttribute("articles", articles);
-		model.addAttribute("currentPage", currentPage);
-		model.addAttribute("lastPageNum", lastPageNum);
-		model.addAttribute("pageStartNum", pageStartNum);
-		model.addAttribute("groups", groups);
 		
+		model.addAttribute("pg", pg);
+		model.addAttribute("num", start);
+		model.addAttribute("pageStartNum", pageStartNum-1);
+		model.addAttribute("lastPageNum", lastPageNum);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("pageGroupStart", pageGroupStart);
+		model.addAttribute("pageGroupEnd", pageGroupEnd);
+		model.addAttribute("articles", articles);
 		return "list";
-	}
-	
-	@GetMapping("modify")
-	public String modify() {
-		return "modify";
-	}
-	
-	@GetMapping("view")
-	public String view() {
-		return "view";
+		
 	}
 	
 	@GetMapping("write")
 	public String write() {
 		return "write";
 	}
-	
 	@PostMapping("write")
 	public String write(ArticleVO vo, HttpServletRequest req) {
 		String regip = req.getRemoteAddr();
@@ -61,6 +62,38 @@ public class ArticleController {
 		
 		service.insertArticle(vo);
 		return "redirect:/list";
+	}
+	
+	@GetMapping("view")
+	public String view(Model model, int no, int pg) {
+		// 게시물 들고오기
+		ArticleVO article = service.selectArticle(no);
+		model.addAttribute("article",article);
+		// 게시물 조회수 +1
+		service.updateArticleHit(no);
+		// 댓글 가져오기
+		return "view";
+	}
+	
+	@GetMapping("download")
+	public ResponseEntity<Resource> download(int fno) throws IOException {
+		FileVO vo =service.selectFile(fno);
+		service.updateFileDownload(fno);
+		ResponseEntity<Resource> respEntity = service.fileDownload(vo);
+		return respEntity;
+	}
+	
+	@GetMapping("modify")
+	public String modify(Model model, int no) {
+		ArticleVO article = service.selectArticle(no);
+		model.addAttribute("article",article);
+		return "modify";
+	}
+	@PostMapping("modify")
+	public String modify(ArticleVO vo) {
+		service.updateArticle(vo);
+		String no = vo.getNo()+"";
+		return "redirect:view?no="+no;
 	}
 	
 }

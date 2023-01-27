@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>글수정</title>    
@@ -11,7 +10,7 @@
         <header>
             <h3>Board System v1.0</h3>
             <p>
-                <span class="nick" sec:authentication="principal.user.nick">길동이</span>님 반갑습니다.
+                <span class="nick">길동이</span>님 반갑습니다.
                 <a href="#" class="logout">[로그아웃]</a>
             </p>
         </header>
@@ -31,12 +30,12 @@
                     </tr>
                     <tr>
                         <th>파일</th>
-                        <td><input type="file" name="fname"/></td>
+                        <td><input type="file" name="file"/></td>
                     </tr>
                 </table>
 
                 <div>
-                    <a th:href="@{/view.html}" class="btn btnCancel">취소</a>
+                    <a href="./view.html" class="btn btnCancel">취소</a>
                     <input type="submit" value="수정완료" class="btn btnComplete"/>
                 </div>
             </form>

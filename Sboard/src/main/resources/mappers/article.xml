@@ -36,6 +36,10 @@
 		limit #{start}, 10;		
 	</select>
 	
+	<select id="selectArticle" resultType="kr.co.sboard.vo.ArticleVO">
+		select * from `board_article` where `no`=#{no};
+	</select>
+	
 	<select id="selectCountTotal" resultType="int">
 		select count(`no`) from `board_article` where `parent`=0;
 	</select>

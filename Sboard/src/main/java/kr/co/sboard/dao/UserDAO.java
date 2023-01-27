@@ -1,20 +1,36 @@
 package kr.co.sboard.dao;
 
+
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import kr.co.sboard.vo.TermsVO;
 import kr.co.sboard.vo.UserVO;
 
 @Mapper
 @Repository
-public interface UserDAO {
-	
-	public int insertUser(UserVO vo);
-	public TermsVO selectTerms();
-	public void selectUser();
-	public void selectUsers();
-	public void updateUser();
-	public void deleteUser();
+public class UserDAO {
 
+	@Autowired
+	private SqlSessionTemplate myBatis;
+	
+	public int insertUser(UserVO vo) {
+		int result = myBatis.insert("user.insertUser",vo);
+		return result;
+	};
+	public UserVO selectUser(String uid) {
+		return null;
+	};
+	public List<UserVO> selectUsers() {
+		return null;
+	};
+	public void updateUser(UserVO vo) {
+		
+	};
+	public void deleteUser(String uid) {
+		
+	};
 }

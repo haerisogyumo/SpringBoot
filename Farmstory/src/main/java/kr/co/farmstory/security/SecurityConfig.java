@@ -23,10 +23,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 		// 인가(접근권한) 설정
 		http.authorizeRequests().antMatchers("/").permitAll();
-		http.authorizeRequests().antMatchers("/list").hasAnyRole("2", "3", "4", "5");
-		http.authorizeRequests().antMatchers("/write").hasAnyRole("3", "4", "5");
-		http.authorizeRequests().antMatchers("/view").hasAnyRole("3", "4", "5");
-		http.authorizeRequests().antMatchers("/modify").hasAnyRole("3", "4", "5");
+		http.authorizeRequests().antMatchers("/board/list").hasAnyRole("2", "3", "4", "5");
+		http.authorizeRequests().antMatchers("/board/write").hasAnyRole("2", "3", "4", "5");
+		http.authorizeRequests().antMatchers("/board/view").hasAnyRole("2", "3", "4", "5");
+		http.authorizeRequests().antMatchers("/board/modify").hasAnyRole("2", "3", "4", "5");
 		
 				
 				

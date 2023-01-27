@@ -8,12 +8,7 @@
 		insert into `board_article` set
 			`title`=#{title},
 			`content`=#{content},
-			<if test="fname.isEmpty() == true">
-				`file`=0,
-			</if>
-			<if test="fname.isEmpty() == false">
-				`file`=1,
-			</if>
+			`cate`=#{cate},
 			`uid`=#{uid},
 			`regip`=#{regip},
 			`rdate`= NOW();	
@@ -28,17 +23,27 @@
 	</insert>
 	
 	<select id="selectArticles" resultType="kr.co.farmstory.vo.ArticleVO">
-		select a.*, b.`nick` from `board_article` as a
-		join `board_user` as b
-		on a.uid = b.uid
-		where `parent`=0
-		order by `no` desc
-		limit #{start}, 10;		
+		select a.*, b.nick from `board_article` AS a JOIN `board_user` AS b ON a.uid = b.uid WHERE `cate`=#{cate} ORDER BY `no` DESC;
 	</select>
-	
+
+	<select id="selectArticle" resultType="kr.co.farmstory.vo.ArticleVO">
+		select * from `board_article` where `no`=#{no};
+
+	</select>
+
 	<select id="selectCountTotal" resultType="int">
 		select count(`no`) from `board_article` where `parent`=0;
 	</select>
-	
+
+	<update id="updateArticle">
+		update `board_article` set
+		`title`=#{title},
+		`content`=#{content},
+		`rdate`=NOW()
+		where `no`=#{no};
+	</update>
+	<delete id="deleteArticle">
+		delete from `board_article` where `no`=#{no};
+	</delete>
 	
 </mapper>

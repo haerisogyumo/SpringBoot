@@ -12,18 +12,24 @@
                 <th>날짜</th>
                 <th>조회</th>
             </tr>
-            <!--/*
-            <tr th:each="article,i:${articles}">
-                <td>[[${pageStartNum - i.index}]]</td>
-                <td><a th:href="@{/view(no=${article.no})}">[[${article.title}]] &#91;[[${article.comment}]]&#93;</a></td>
-                <td>[[${article.nick}]]</td>
-                <td>[[${article.rdate}]]</td>
-                <td>[[${article.hit}]]</td>
-            </tr>
-            */-->
+            <th:block th:if="${#lists.size(articles) > 0}"/>
+                <tr th:each="article,i:${articles}">
+                    <td>[[${i.count}]]</td>
+                    <td><a th:href="@{/board/view(group=${group}, cate=${cate}, no=${article.no})}">[[${article.title}]] &#91;[[${article.comment}]]&#93;</a></td>
+                    <td>[[${article.nick}]]</td>
+                    <td>[[${article.rdate}]]</td>
+                    <td>[[${article.hit}]]</td>
+                </tr>
+            </th:block>
+            <th:block th:unless="${#lists.size(articles) > 0}">
+                <tr>
+                    <td colspan="5">등록된 게시물이 없습니다.</td>
+                </tr>
+            </th:block>
         </table>
 
         <div class="page">
+            <a class="num current">1</a>
             <!--
             <th:block th:if="${groups[0]>1}">
                 <a th:href="@{/list(pg=${groups[0]-1})}" class="prev">이전</a>
