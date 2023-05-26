@@ -2,10 +2,10 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.co.sboard.dao.ArticleDAO">
+<mapper namespace="kr.co.ChimAcademy.dao.ChineseDAO">
 	
 	<insert id="insertArticle" useGeneratedKeys="true" keyProperty="no">
-		insert into `board_article` set
+		insert into `board` set
 			`title`=#{title},
 			`content`=#{content},
 			<if test="fname.isEmpty() == true">
@@ -19,24 +19,16 @@
 			`rdate`= NOW();	
 	</insert>
 	
-	<insert id="insertFile">
-		insert into `board_file` set
-			`parent`=#{parent},
-			`newName`=#{newName},
-			`oriName`=#{oriName},
-			`rdate`=NOW();
-	</insert>
-	
-	<select id="selectArticles" resultType="kr.co.sboard.vo.ArticleVO">
+	<select id="selectArticles" resultType="kr.co.ChimAcademy.vo.ArticleVO">
 		select a.*, b.`nick` from `board_article` as a
 		join `board_user` as b
 		on a.uid = b.uid
 		where `parent`=0
 		order by `no` desc
-		limit #{start}, 10;		
+		limit #{start}, 10;
 	</select>
 	
-	<select id="selectArticle" resultType="kr.co.sboard.vo.ArticleVO">
+	<select id="selectArticle" resultType="kr.co.ChimAcademy.vo.ArticleVO">
 		select * from `board_article` where `no`=#{no};
 	</select>
 	

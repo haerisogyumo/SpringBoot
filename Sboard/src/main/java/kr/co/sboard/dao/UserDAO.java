@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.sboard.vo.UserVO;
 
-@Mapper
 @Repository
 public class UserDAO {
 
